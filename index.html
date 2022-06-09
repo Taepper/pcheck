@@ -1,0 +1,102 @@
+
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/></head>
+      <body>
+        <div>
+        <div style="
+        position: fixed;
+        width: 40%;">
+          <h1 class="logo">Percentage Calculator</h1> by <a href="https://alextaepper.de">Alexander Taepper</a><br>
+          <form>
+            <fieldset class="values">
+              What is <input id="f1" type="text" size="3" autofocus="autofocus" onkeyup="calculate(this, 'f1')"/> %
+              <nobr>of <input id="f1" type="text" size="7" onkeyup="calculate(this, 'f1')"/>?</nobr>
+              <nobr> Show <input id="f1" type="number" size="5" value="2" onkeyup="calculate(this, 'f1')"/> decimals.</nobr>
+            </fieldset>
+            <fieldset class="results">
+              <input id="f1" type="text" size="6" readonly="readonly"/><span class="hide"></span>
+            </fieldset>
+          </form>
+          <form>
+            <fieldset class="values">
+              <input id="f2" type="text" size="5" onkeyup="calculate(this, 'f2')"/> is what percent
+              <nobr>of <input id="f2" type="text" size="5" onkeyup="calculate(this, 'f2')"/>?</nobr>
+              <nobr> Show <input id="f2" type="number" size="5" value="2" onkeyup="calculate(this, 'f2')"/> decimals.</nobr>
+            </fieldset>
+            <fieldset class="results">
+              <input id="f2" type="text" size="6" readonly="readonly"/><span> %</span>
+            </fieldset>
+          </form>
+          <form>
+            <fieldset class="values">
+              What is the percentage increase/decrease<br/>
+              <nobr>from <input id="f3" type="text" size="5" onkeyup="calculate(this, 'f3')"/></nobr>
+              <nobr>to <input id="f3" type="text" size="5" onkeyup="calculate(this, 'f3')"/>?</nobr>
+              <nobr> Show <input id="f3" type="number" size="5" value="2" onkeyup="calculate(this, 'f3')"/> decimals.</nobr>
+            </fieldset>
+            <fieldset class="results"><br class="remove"/>
+              <input id="f3" type="text" size="6" readonly="readonly"/><span> %</span>
+            </fieldset>
+          </form>
+          <p class="tips">
+            <strong>Tips:</strong> Use tab to move to the next field. Use shift-tab 
+            to move to the previous field. Press enter to calculate.
+          </p>
+        </div>
+          <div class="tips" style="margin-left: 50%;">
+            <strong>History:</strong>
+            <div style="display: flex; flex-direction: column-reverse;">
+            <table id ="history" style="width: 100%;"><tr><th style="width: 50%;">Executed Query:</th><th style="width: 50%;">Result:</th></tr></table>
+            </div>
+          </div>
+        </div>
+  <script>
+    function calculate(e, ty){
+        var t = document.querySelectorAll("[id=" + ty + "]");
+        var a = t[0].value.replace(",",".");  
+        var c = t[1].value.replace(",",".");
+        var dec = t[2].value
+        var n = 0;
+        if(isNumber(a) && isNumber(c) && isNumber(dec)){
+            switch(e.getAttribute("id")){
+                case"f1":
+                n=a/100*c;
+                node1 = document.createElement("td")
+                node1.innerHTML = ("" + a + " percent of " + c + " is");
+                break;
+                case"f2":
+                n=a/c*100;
+                node1 = document.createElement("td")
+                node1.innerHTML= ("" + a + " of " + c + " is");
+                break;
+                case"f3":
+                n=(c-a)/a*100
+                node1 = document.createElement("td")
+                node1.innerHTML= ("" + a + " increase/decrease to " + c + " is");
+            }
+            t[3].value=n.toFixed(dec);;
+            if(window.event.key === 'Enter') {
+                e.value = "";
+                var tr = document.createElement('tr');
+                node2 = document.createElement("td")
+                node2.innerHTML = "<strong>" + t[3].value + "</strong>"
+                if(ty != "f1"){
+                    node2.innerHTML += " %"
+                }
+                tr.appendChild(node1)
+                tr.appendChild(node2)
+                document.querySelector("[id=history]").appendChild(tr)
+            }
+        }
+        else{
+          t[3].value = ""
+        }
+    }
+    
+        
+    function isNumber(e){
+        return !isNaN(parseFloat(e))&&isFinite(e)
+    }
+    
+    </script>
+    </body>
+</html>
